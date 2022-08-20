@@ -1,0 +1,7 @@
+# Model Building Requirements
+numpy
+pandas
+gym
+stable-baselines3[extra]
+joblib
+stockstats==0.4.
