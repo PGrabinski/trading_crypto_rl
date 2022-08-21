@@ -2,6 +2,6 @@
 numpy
 pandas
 gym
-stable-baselines3[extra]
+stable-baselines3
 joblib
-stockstats==0.4.
+stockstats==0.4.1

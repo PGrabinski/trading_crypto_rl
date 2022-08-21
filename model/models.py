@@ -69,11 +69,10 @@ def train_DDPG(env_train, model_name, timesteps=10000):
 
     # add the noise objects for DDPG
     n_actions = env_train.action_space.shape[-1]
-    param_noise = None
     action_noise = OrnsteinUhlenbeckActionNoise(mean=np.zeros(n_actions), sigma=float(0.5) * np.ones(n_actions))
 
     start = time.time()
-    model = DDPG('MlpPolicy', env_train, param_noise=param_noise, action_noise=action_noise)
+    model = DDPG('MlpPolicy', env_train, action_noise=action_noise)
     model.learn(total_timesteps=timesteps)
     end = time.time()
 
