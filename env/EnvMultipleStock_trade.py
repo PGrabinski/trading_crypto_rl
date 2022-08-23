@@ -124,10 +124,7 @@ class StockEnvTrade(gym.Env):
             pass
         
     def step(self, actions):
-        # print(self.day)
         self.terminal = self.day >= len(self.df.index.unique())-1
-        # print(actions)
-
         if self.terminal:
             plt.plot(self.asset_memory,'r')
             plt.savefig('results/account_value_trade_{}_{}.png'.format(self.model_name, self.iteration))
@@ -159,16 +156,11 @@ class StockEnvTrade(gym.Env):
             return self.state, self.reward, self.terminal,{}
 
         else:
-            # print(np.array(self.state[1:29]))
-
             # actions = actions * HMAX_NORMALIZE
             if sum(self.state[(STOCK_DIM + 1):(STOCK_DIM * 2 + 1)]) != 0.:
                 nonzero_multipliers = np.array(self.state[(STOCK_DIM + 1):(STOCK_DIM * 2 + 1)]) != 0.
-                # print('nonzero_multipliers', nonzero_multipliers)
                 multipliers = np.ones_like(actions)
-                # print('multipliers size', multipliers.shape)
                 multipliers[nonzero_multipliers] *= 0.2 * self.state[0] / np.array(self.state[(STOCK_DIM + 1):(STOCK_DIM * 2 + 1)])[nonzero_multipliers]
-                # print('multipliers', multipliers)
                 actions *= multipliers
                 actions[np.logical_not(nonzero_multipliers)] = 0.
             #actions = (actions.astype(int))
@@ -195,7 +187,6 @@ class StockEnvTrade(gym.Env):
             self.day += 1
             self.data = self.df.loc[self.day,:]         
             self.turbulence = self.data['turbulence'].values[0]
-            #print(self.turbulence)
             #load next state
             # print("stock_shares:{}".format(self.state[29:]))
             self.state =  [self.state[0]] + \

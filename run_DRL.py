@@ -2,7 +2,7 @@
 import pandas as pd
 import numpy as np
 import time
-# from stable_baselines.common.vec_env import DummyVecEnv
+
 from stable_baselines3.common.vec_env import DummyVecEnv
 
 # preprocessor
@@ -12,12 +12,6 @@ from config.config import *
 # model
 from model.models import *
 import os
-
-# BEGINING_DATE = 20090000
-# END_TRAIN_DATE = 20151000
-#
-# BEGINING_TEST_DATE = 20151001
-# END_TEST_DATE = 20200707
 
 BEGINING_DATE = 2020600
 END_TRAIN_DATE = 20210900
@@ -64,5 +58,4 @@ def run_model() -> None:
     #_logger.info(f"saving model version: {_version}")
 
 if __name__ == "__main__":
-    print('start main')
     run_model()

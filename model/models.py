@@ -139,7 +139,6 @@ def DRL_prediction(df,
         action, _states = model.predict(obs_trade)
         obs_trade, rewards, dones, info = env_trade.step(action)
         if i == (len(trade_data.index.unique()) - 2):
-            # print(env_test.render())
             last_state = env_trade.render()
 
     df_last_state = pd.DataFrame({'last_state': last_state})
@@ -236,7 +235,6 @@ def run_ensemble_strategy(df, unique_trade_date, rebalance_window, validation_wi
         ############## Training and Validation starts ##############
         print("======Model training from: ", begining_date, "to ",
               unique_trade_date[i - rebalance_window - validation_window])
-        # print("training: ",len(data_split(df, start=20090000, end=test.datadate.unique()[i-rebalance_window]) ))
         # print("==============Model Training===========")
         print("======A2C Training========")
         model_a2c = train_A2C(env_train, model_name="A2C_30k_dow_{}".format(i), timesteps=30000)

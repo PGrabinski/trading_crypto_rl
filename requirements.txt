@@ -5,3 +5,4 @@ gym
 stable-baselines3
 joblib
 stockstats==0.4.1
+pyfolio

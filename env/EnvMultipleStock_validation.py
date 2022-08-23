@@ -117,9 +117,7 @@ class StockEnvValidation(gym.Env):
             pass
         
     def step(self, actions):
-        # print(self.day)
         self.terminal = self.day >= len(self.df.index.unique())-1
-        # print(actions)
 
         if self.terminal:
             plt.plot(self.asset_memory,'r')
@@ -129,12 +127,6 @@ class StockEnvValidation(gym.Env):
             df_total_value.to_csv('results/account_value_validation_{}.csv'.format(self.iteration))
             end_total_asset = self.state[0]+ \
             sum(np.array(self.state[1:(STOCK_DIM+1)])*np.array(self.state[(STOCK_DIM+1):(STOCK_DIM*2+1)]))
-            #print("previous_total_asset:{}".format(self.asset_memory[0]))           
-
-            #print("end_total_asset:{}".format(end_total_asset))
-            #print("total_reward:{}".format(self.state[0]+sum(np.array(self.state[1:(STOCK_DIM+1)])*np.array(self.state[(STOCK_DIM+1):61]))- self.asset_memory[0] ))
-            #print("total_cost: ", self.cost)
-            #print("total trades: ", self.trades)
 
             df_total_value.columns = ['account_value']
             df_total_value['daily_return']=df_total_value.pct_change(1)
@@ -142,20 +134,13 @@ class StockEnvValidation(gym.Env):
                   df_total_value['daily_return'].std()
             #print("Sharpe: ",sharpe)
             
-            #df_rewards = pd.DataFrame(self.rewards_memory)
-            #df_rewards.to_csv('results/account_rewards_trade_{}.csv'.format(self.iteration))
-            
-            # print('total asset: {}'.format(self.state[0]+ sum(np.array(self.state[1:29])*np.array(self.state[29:]))))
-            #with open('obs.pkl', 'wb') as f:  
-            #    pickle.dump(self.state, f)
+
             
             return self.state, self.reward, self.terminal,{}
 
         else:
-            # print(np.array(self.state[1:29]))
 
             # actions = actions * HMAX_NORMALIZE
-            # print(np.array(self.state[(STOCK_DIM + 1):(STOCK_DIM * 2 + 1)]))
             if sum(self.state[(STOCK_DIM + 1):(STOCK_DIM * 2 + 1)]) != 0.:
                 nonzero_multipliers = np.array(self.state[(STOCK_DIM + 1):(STOCK_DIM * 2 + 1)]) != 0.
                 # print('nonzero_multipliers', nonzero_multipliers)
@@ -170,7 +155,6 @@ class StockEnvValidation(gym.Env):
                 actions=np.array([-HMAX_NORMALIZE]*STOCK_DIM)
             begin_total_asset = self.state[0]+ \
             sum(np.array(self.state[1:(STOCK_DIM+1)])*np.array(self.state[(STOCK_DIM+1):(STOCK_DIM*2+1)]))
-            #print("begin_total_asset:{}".format(begin_total_asset))
             
             argsort_actions = np.argsort(actions)
             
@@ -188,9 +172,7 @@ class StockEnvValidation(gym.Env):
             self.day += 1
             self.data = self.df.loc[self.day,:]         
             self.turbulence = self.data['turbulence'].values[0]
-            #print(self.turbulence)
             #load next state
-            # print("stock_shares:{}".format(self.state[29:]))
             self.state =  [self.state[0]] + \
                     self.data.adjcp.values.tolist() + \
                     list(self.state[(STOCK_DIM+1):(STOCK_DIM*2+1)]) + \
